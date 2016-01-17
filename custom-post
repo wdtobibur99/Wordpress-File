@@ -1,4 +1,11 @@
 
+//custom post query......
+<?php
+	$post_item = new WP_Query(array(	
+		'post_type' => 'post',
+		'posts_per_page' => 4,
+	));
+?>	
 //custom post codes.......
 <?php
 	function create_events_cpt() {
