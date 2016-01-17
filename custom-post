@@ -1,0 +1,17 @@
+<?php
+	function zboom_custom_post(){
+		//slider item custopm post 
+		register_post_type('slider_item', array(
+			'labels' => array(
+				'name' => __('Slider','zboom'),
+				'add_new_item' => __('Add New Slider'),
+			),
+			'public' => true,
+			'supports' => array('title','thumbnail'),
+			'has_archive' => true,
+		));
+
+	}
+	add_action('init','zboom_custom_post');
+
+?>
