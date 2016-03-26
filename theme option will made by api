@@ -5,7 +5,7 @@
 add_menu_page ('page_title','menu_title','capability','menu_slug','callable function','icon name,'position');
 add_settings_field('unic id name','label name','callback function name','section name');
 register_setting('section name','unic id name');
-
+add_settings_section('section id','section name','callback function name','theme options slug name');
 1: add_settings_field
 
 2: register_setting 
