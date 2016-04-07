@@ -1,0 +1,24 @@
+
+///this code use single.php after the_content(),
+<?php
+ 	$defaults = array(
+		'before'           => '<p>' ,
+		'after'            => '</p>',
+		'link_before'      => '<p>',
+		'link_after'       => '</p>',
+		'next_or_number'   => 'number',
+		'separator'        => '',
+		'nextpagelink'     => __( 'Next page' ),
+		'previouspagelink' => __( 'Previous page' ),
+		'pagelink'         => '%',
+		'echo'             => 1
+	);
+ 
+        wp_link_pages( $defaults );
+
+?>
+
+
+///and see this link
+
+https://gist.github.com/AlphaBlossom/d9724e2fa687ede868a2#file-wp-links-page-prev-next-number-links-php
