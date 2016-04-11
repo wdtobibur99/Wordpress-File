@@ -35,3 +35,26 @@
 	}
 	add_action( 'init', 'create_events_cpt' );
 <?php?>
+
+// others 
+
+<?php
+	if(! function_exists('nescris_custom_post')):
+	function nescris_custom_post() {
+		register_post_type('event',array(
+			'labels'=> array(
+				'name' => 'Event Items',
+				'add_new_item' => 'Add New Event',
+			),
+			'public' =>true,
+			'supports' => array('title','editor','thumbnail','excerpt','custom-fields'),
+		));
+	}
+	add_action( 'init', 'nescris_custom_post' );
+endif;
+
+?>
+
+
+
+
