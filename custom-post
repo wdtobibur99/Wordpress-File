@@ -56,5 +56,33 @@ endif;
 ?>
 
 
+//taxonomy
+if(! function_exists('phozer_taxonomy')):
+		function phozer_taxonomy() {
+			//portfolio taxonomy
+			register_taxonomy(
+				'portfolio_cat',
+				'portfolio',
+				array(
+					'label' =>'Portfolio Category',
+					'public'=> true,
+					'rewrite'=> array('slug' => 'portfolio-category'),
+					'hierarchical'      => true,
+					'show_ui'           => true,
+					'how_in_nav_menus'  => true,
+					'public'            => true,
+					'show_admin_column' => true,
+					'query_var'         => true,
+				)
+			);
+		};
+	add_action( 'init', 'phozer_taxonomy' );
+endif;
+	
+
+
+
+
+
 
 
