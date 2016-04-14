@@ -1,0 +1,52 @@
+//this is  code for portfolio filtter 
+
+ <?php $variable name type here same =get_terms('taxnomy id name type here'); ?>
+    <?php if(!empty($variable name type here same) && ! is_wp_error($variable name type here same)):?>
+        <ul>
+            <li class="active" data-filter="*">All</li>
+            <?php foreach( $variable name type here same  as $variable name type here any name one): ?>
+                <li data-filter=".<?php echo $variable name type here any name one->slug ?>"><?php echo $variable name type here any name one->name ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+    
+    
+    //this is code for portfolio items
+    
+    //this is code custom post query 
+  <?php 
+    $portfolo_item=new WP_Query(array(
+        'post_type' => 'portfolio',
+        'posts_per_page' =>12,
+    ));
+  ?>
+
+<?php while($portfolo_item->have_posts()) : $portfolo_item->the_post(); ?>
+
+//this is code for filtter menu name in items
+  <?php
+      $variable name type here same = get_the_terms($post->ID,'portfolio_cat');
+      if($variable name type here same && !is_wp_error($variable name type here same)):
+          $defarent variable name type here any name two = array();
+
+          foreach($variable name type here same as $defarent variable name type here any name one){
+              $defarent variable name type here any name two []= $defarent variable name type here any name one->slug;  
+          }
+
+          $different variable name type here any name three = join(", ", $different variable name type here any name two);
+
+         $different variable name type here any name four = join(" ", $different variable name type here any name two);
+          
+      endif;
+  ?>
+
+<figure id="single-portfolio" class="<?php echo   $different variable name type here any name four;?>">
+  <?php the_post_thumbnail('portfolio-img',array('class' => 'img-responcive')) ?>
+  <figcaption>
+      <h2><?php the_title();?></h2>
+       <p class="description">
+          <?php the_content();?>
+        </p>
+  </figcaption>			
+</figure>               
+<?php endwhile; ?>
