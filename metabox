@@ -1,0 +1,5 @@
+ 
+ //this is code show 
+ $variable_name=get_post_meta($post->ID,'metabox_id_name',true);
+ 
+ echo $variable_name;
