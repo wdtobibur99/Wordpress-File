@@ -1,24 +1,53 @@
 
-///this code use single.php after the_content(),
-<?php
- 	$defaults = array(
-		'before'           => '<p>' ,
-		'after'            => '</p>',
-		'link_before'      => '<p>',
-		'link_after'       => '</p>',
-		'next_or_number'   => 'number',
-		'separator'        => '',
-		'nextpagelink'     => __( 'Next page' ),
-		'previouspagelink' => __( 'Previous page' ),
-		'pagelink'         => '%',
-		'echo'             => 1
-	);
- 
-        wp_link_pages( $defaults );
+//this code add function file
 
+
+/**
+ * Add prev and next links to a numbered page link list
+ */
+function wp_link_pages_args_prevnext_add($args)
+{
+    global $page, $numpages, $more, $pagenow;
+
+    if (!$args['next_or_number'] == 'next_and_number') 
+        return $args; # exit early
+
+    $args['next_or_number'] = 'number'; # keep numbering for the main part
+    if (!$more)
+        return $args; # exit early
+
+    if($page-1) # there is a previous page
+        $args['before'] .= _wp_link_page($page-1)
+            . $args['link_before']. $args['previouspagelink'] . $args['link_after'] . '</a>'
+        ;
+
+    if ($page<$numpages) # there is a next page
+        $args['after'] = _wp_link_page($page+1)
+            . $args['link_before'] . ' ' . $args['nextpagelink'] . $args['link_after'] . '</a>'
+            . $args['after']
+        ;
+
+    return $args;
+};
+add_filter('wp_link_pages_args', 'wp_link_pages_args_prevnext_add');
+
+// add this code single.php after the_content function
+
+<?php
+	wp_link_pages(array(
+		'before' => '<p>' . __('Pages:'),
+		'after' => '</p>',
+		'next_or_number' => 'next_and_number', # activate parameter overloading
+		'nextpagelink' => __('Next'),
+		'previouspagelink' => __('Previous'),
+		'pagelink' => '%',
+		'echo' => 1 )
+	);
 ?>
 
 
-///and see this link
 
-https://gist.github.com/AlphaBlossom/d9724e2fa687ede868a2#file-wp-links-page-prev-next-number-links-php
+
+
+
+
