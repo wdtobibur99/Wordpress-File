@@ -1,3 +1,8 @@
+//custom post icon
+
+site url: https://developer.wordpress.org/resource/dashicons
+
+
 
 //custom post query......
 <?php
