@@ -1,0 +1,10 @@
+//add this code functions 
+
+<?php
+	function read_more($limit){
+		$post_content = explode(' ', get_the_content());
+		$less_conteent = array_slice($post_content,0,$limit);
+		echo implode(' ', $less_conteent);
+	};
+
+?>	
