@@ -1,0 +1,31 @@
+//add this code functions.php
+
+<?php
+	function theme_menu(){
+		if(function_exists('register_nav_menu')){
+			register_nav_menu('mainmenu','Andia Menu');
+		};
+	};
+	add_action('init','theme_menu');
+	// fall back function
+	function fallback_menu(){
+		echo '<ul class="nav pull-right">';
+		if('page' !=get_option('show_on_front')){
+			echo '<li><a href="'.site_url().'/">Home</a></li>';
+		}
+		wp_list_pages('title_li=');
+		echo '</ul>';
+	}
+?>
+
+//add this code menu location 
+
+<?php
+	if(function_exists('wp_nav_menu')){
+		wp_nav_menu(array(
+		'theme_location'=>'mainmenu',
+		'menu_class' => 'nav navbar-nav',
+		'fallback_cb' => 'fallback_menu',
+		));
+	}
+?>
