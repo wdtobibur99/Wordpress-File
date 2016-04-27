@@ -1,0 +1,21 @@
+//add this code functions.php
+
+function short_title($num) {
+$limit = $num+1;
+$title = str_split(get_the_title());
+$length = count($title);
+if ($length>=$num) {
+$title = array_slice( $title, 0, $num);
+$title = implode("",$title)."...";
+echo $title;
+} else {
+the_title();
+}}
+
+
+<?php short_title(73); ?>
+
+
+// sile link
+
+https://wordpress.org/support/topic/how-to-limit-the-display-by-number-of-words-title-in-the-loop
