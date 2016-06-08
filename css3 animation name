@@ -44,7 +44,28 @@ animation name : slideInLeft
 animation name : slideInRight
 animation name : slideInUp
 
-
+			array(
+                'name' => __( 'Service Animation', 'textdomain' ),
+                'id'   => $prefix . 'Service_icon',
+                'type'    => 'select_advanced',
+                'options' => array(
+                    'fadeIn' => 'Leaf',
+                    'fadeInDown' => 'Fade In Down',
+                    'fadeInLeft' => 'Fade In Left',
+                    'fadeInRight' => 'Fade In Right',
+                    'fadeInUp' => 'Fade In Up',
+                    'zoomIn' => 'Zoom In',
+                    'zoomInDown' => 'Zoom In Down',
+                    'zoomInLeft' => 'Zoom In Left',
+                    'zoomInRight' => 'Zoom In Right',
+                    'zoomInUp' => 'Zoom In Up',
+                    'slideInDown' => 'Slide In Down',
+                    'slideInLeft' => 'Slide In Left',
+                    'slideInRight' => 'Slide In Right',
+                    'slideInUp' => 'Slide In Up',
+                ),
+               
+            ),
 
 
 
