@@ -1,0 +1,18 @@
+///
+
+<?php if(get_field('social_media_items','option')): ?>
+    <div class="col-md-6">
+      <!-- Start Social Links -->
+      <ul class="social-list">
+				<?php 
+					while(has_sub_field('social_media_items','option')):
+					$socila_media = get_sub_field('social_media_','option');
+					$link = get_sub_field('social_media_link','option');
+					$title = get_sub_field('social__tilte','option');
+					
+				?>
+        <li>
+           <a class="facebook itl-tooltip" data-placement="top" title="<?php echo $title; ?>" target="_blank" href="<?php echo $link; ?>"><i class="fa fa-<?php echo $socila_media; ?>"></i></a>
+        </li>
+      </ul>  
+	<?php endwhile; ?>
