@@ -2,4 +2,20 @@
  //this is code show 
  $variable_name=get_post_meta($post->ID,'metabox_id_name',true);
  
+ $gellary = rwmb_meta( 'gellary', 'type=image_advanced&size=full' );
+ 
+ <?php
+							if($gellary):
+							foreach ( $gellary as $image ) {?>
+							
+								<div class="gallery_img"><?php
+									echo "<img src='{$image['url']}' width='{$image['width']}' height='{$image['height']}' alt='{$image['alt']}' />";
+									?>
+								</div>
+							<?php
+								
+							}
+						endif;
+						?>
+ 
  echo $variable_name;
