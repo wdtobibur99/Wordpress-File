@@ -1,7 +1,9 @@
  
  //this is code show 
  $variable_name=get_post_meta($post->ID,'metabox_id_name',true);
- 
+ $ec=get_post_meta($post->ID,'education_courses',true); 
+ education_courses ( options field name )
+ Exmple: echo  $ec['courses_price'];
  $gellary = rwmb_meta( 'gellary', 'type=image_advanced&size=full' );
  
  <?php
