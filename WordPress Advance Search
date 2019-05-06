@@ -221,6 +221,92 @@ add_shortcode('agents', 'agent_list_shortcode');
 
 Second Way Without shortcode
 
+
+This is code for Functions file
+
+
+<?php
+	function moderna_custom_post(){
+		register_post_type('cotech_hotel_item',array(
+			'labels' =>array(
+			'name'=>__('Hotel','realestate'),
+			'add_new_item'=>__('Add new hotel','realestate'),
+			),
+			'menu_icon'=>'dashicons-admin-home',
+			'public'=>true,
+			'supports' =>array('title','thumbnail','editor'),
+		));	
+	};
+add_action('init','moderna_custom_post');
+
+//taxonomy
+if(! function_exists('nondini_taxonomy')):
+		function nondini_taxonomy() {
+			register_taxonomy(
+				'hotel_category',
+				'cotech_hotel_item',
+				array(
+					'label' =>__('Hotel category', 'realestate'),
+					'public'=> true,
+					'rewrite'=> array('slug' => 'hotel-category'),
+					'hierarchical'      => true,
+					'show_ui'           => true,
+					'how_in_nav_menus'  => true,
+					'public'            => true,
+					'show_admin_column' => true,
+					'query_var'         => true,
+				)
+			);
+			register_taxonomy(
+				'hotel_location',
+				'cotech_hotel_item',
+				array(
+					'label' =>__('Hotel location', 'realestate'),
+					'public'=> true,
+					'rewrite'=> array('slug' => 'hotel-location'),
+					'hierarchical'      => true,
+					'show_ui'           => true,
+					'how_in_nav_menus'  => true,
+					'public'            => true,
+					'show_admin_column' => true,
+					'query_var'         => true,
+				)
+			);			
+			register_taxonomy(
+				'hotel_bedrooms',
+				'cotech_hotel_item',
+				array(
+					'label' =>__('Hotel bedrooms', 'realestate'),
+					'public'=> true,
+					'rewrite'=> array('slug' => 'hotel-bedrooms'),
+					'hierarchical'      => true,
+					'show_ui'           => true,
+					'how_in_nav_menus'  => true,
+					'public'            => true,
+					'show_admin_column' => true,
+					'query_var'         => true,
+				)
+			);			
+			register_taxonomy(
+				'hotel_bathrooms',
+				'cotech_hotel_item',
+				array(
+					'label' =>__('Hotel bathrooms', 'realestate'),
+					'public'=> true,
+					'rewrite'=> array('slug' => 'hotel-bathrooms'),
+					'hierarchical'      => true,
+					'show_ui'           => true,
+					'how_in_nav_menus'  => true,
+					'public'            => true,
+					'show_admin_column' => true,
+					'query_var'         => true,
+				)
+			);
+		};
+	add_action( 'init', 'nondini_taxonomy' );
+endif;
+
+
 This Code for Search Form.....
 
  <!-- ##### Advance Search Area Start ##### -->
