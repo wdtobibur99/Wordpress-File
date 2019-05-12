@@ -1,3 +1,134 @@
+<?php get_header(); ?>
+<?php
+	$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+	$room_type = isset( $_GET['room_type'] ) ? $_GET['room_type'] : '';
+	$destinajon = isset( $_GET['destinajon'] ) ? $_GET['destinajon'] : '';
+	$room_person = isset( $_GET['_room_person'] ) ? $_GET['_room_person'] : '';
+	$s = isset( $_GET['s'] ) ? $_GET['s'] : '';	
+	$args_product = array(
+		's' => $s,
+		'post_type'	=> 'room',
+		'posts_per_page' => 12,
+		'paged' => $paged,
+		's' => $s,
+		'meta_query' => array(
+			'relation' => 'AND',
+			array(
+				'meta_key'	=>'_room_type',
+				'value' => $room_type,
+			),
+			array(
+				'meta_key'	=>'destinajon',
+				'value' => $destinajon,
+			),
+			array(
+				'meta_key'	=>'_room_person',
+				'value' => $room_person,
+			),
+
+		),
+	);	
+?>
+<div class="content-list-category container">
+		<div class="category-contents">		
+		<?php
+			$room_query = new wp_query( $args_product, $destinajon );
+			if( $room_query -> have_posts() ){
+		?>
+			<div class="room-content room-content-grid row">
+			<?php 
+				while( $room_query -> have_posts() ) : $room_query -> the_post(); 
+					global $post;
+					$price 	= get_post_meta( $post->ID, '_room_price', true );
+					$type   = get_post_meta( $post->ID, '_room_type', true );
+					$destinajon   = get_post_meta( $post->ID, 'destinajon', true );
+					$area   = get_post_meta( $post->ID, '_room_area', true );
+					$person = get_post_meta( $post->ID, '_room_person', true );
+					$cm_avg	= kingplace_get_rating_average( $post->ID );
+					$room_symbol	= get_option( '_room_symbol_currency' );
+				?>
+				<div id="post-<?php the_ID();?>" class="col-lg-4 col-md-4 col-sm-6 col-xs-6 room">
+					<div class="entry clearfix asdfasf">
+						<?php if ( get_the_post_thumbnail() ){ ?>
+						<div class="entry-thumb">	
+							<?php if ( has_post_thumbnail() ){ ?>
+							<a href="#" data-toggle="gallery" class="room-gallery" data-id="<?php echo esc_attr( $post->ID ); ?>"><i class="fa fa-picture-o" aria-hidden="true"></i></a>
+							<a class="entry-hover" href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
+								<?php the_post_thumbnail('kingplace_detail_thumb'); ?>			
+							</a>
+							<h3><a href="#" data-toggle="booking" data-id="<?php echo get_the_title( $post->ID ); ?>"><?php esc_html_e( 'Book Now', 'sw_hotel' ); ?></a></h3>
+							<?php } ?>			
+						</div>
+						<?php } ?>
+						<div class="entry-content">				
+							<div class="content-top clearfix">
+								<h4><a href="<?php echo get_permalink($post->ID)?>"><?php kingplace_trim_words( $post->post_title ); ?></a></h4>
+								<div class="item-meta">
+									<ul>
+										<li><?php printf( __( '%s m2', 'kingplace' ), number_format( $area ) ); ?></li>
+										<li><?php printf( _n( '%s person', '%s people', $person, 'kingplace' ), $person ); ?></li>
+										<li><?php echo $type; ?></li>
+										<li><?php echo $destinajon; ?></li>
+									</ul>
+								</div>
+								<div class="item-bottom clearfix">
+									<?php if( $price ) : ?>
+									<div class="item-price">
+										<?php echo sprintf( __( 'Starting at: <span> %s%s /Night </span>', 'sw_hotel' ), sw_hotel_price_format( $price ), $room_symbol ); ?>
+									</div>
+									<?php endif; ?>
+									<div class="item-rating">
+										<div class="comment-rating"><div class="star"><?php echo ( $cm_avg > 0 ) ?'<span style="width:'. ( $cm_avg*12 ).'px"></span>' : ''; ?></div></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<?php endwhile;
+				
+			?>
+			</ul>
+			<!--Pagination-->
+			<?php if ($room_query->max_num_pages > 1) : ?>
+			<div class="pag-search ">
+					<div class="pagination nav-pag pull-right">
+						<div class="wrap_content clearfix">
+						<?php 
+							echo paginate_links( array(
+								'base' => esc_url_raw( str_replace( 999999999, '%#%', get_pagenum_link( 999999999, false ) ) ),
+								'format' => '?paged=%#%',
+								'current' => max( 1, get_query_var('paged') ),
+								'total' => $room_query->max_num_pages,
+								'end_size' => 1,
+								'mid_size' => 1,
+								'prev_text' => '<i class="fa fa-angle-left"></i>',
+								'next_text' => '<i class="fa fa-angle-right"></i>',
+								'type' => 'list',
+								
+							) );
+						?>
+					</div>
+				</div>
+			</div>
+	<?php endif;wp_reset_postdata(); ?>
+	</div>
+	<!--End Pagination-->
+	<?php 
+		}else{
+			echo '<div class="alert alert-warning alert-dismissible" role="alert">
+				<a class="close" data-dismiss="alert">&times;</a>
+				<p>'. esc_html__( 'There is not item in this category', 'sw_hotel' ) .'</p>
+			</div>';
+		}
+	?>
+	</div>
+</div>
+<?php get_footer(); ?>
+
+
+
+
 <?php
 /**
 * WordPress Query Comprehensive Reference
