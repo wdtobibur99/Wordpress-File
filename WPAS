@@ -56,7 +56,36 @@ function my_search_form() {
      'post_html' => '</div></div>',
      'class' => 'form-control'
     );
-
+ $args['fields'][] = array( 
+        'type' => 'meta_key', 
+        'format' => 'select',
+        'class' => 'form-control', 
+        'meta_key' => 'flate_beadroom',
+        'pre_html' => '<div class="col-12 col-md-4 col-lg-3"><div class="form-group">',
+        'post_html' => '</div></div>',
+        "allow_null" => "Select a beadroom",
+        'values'   => array(
+          '1 Bead' => 'One Bead',
+          '2 Bead' => 'Two Bead',
+          '3 Bead' => 'Three Bead',
+          '4 Bead' => 'Four Bead',
+      ),
+    );
+    $args['fields'][] = array( 
+        'type' => 'meta_key', 
+        'format' => 'select',
+        'class' => 'form-control', 
+        'meta_key' => 'flate_bathroom',
+        'pre_html' => '<div class="col-12 col-md-4 col-lg-3"><div class="form-group">',
+        'post_html' => '</div></div>',
+        "allow_null" => "Select a bathroom",
+        'values'   => array(
+          '1 Bath' => 'One Bath',
+          '2 Bath' => 'Two Bath',
+          '3 Bath' => 'Three Bath',
+          '4 Bath' => 'Four Bath',
+      ),
+    );
     
     $args['fields'][] = array( 'type' => 'posts_per_page', 
                                'format' => 'select', 
@@ -75,6 +104,168 @@ function my_search_form() {
     register_wpas_form('myform', $args);
 }
 add_action('init','my_search_form');
+
+List Flat code
+
+<?php
+    get_header();
+    $search = new WP_Advanced_Search('myform');
+    /*
+        Template Name: Flat List
+    */
+?>
+
+    <!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img" style="background-image: url(<?php echo esc_url(get_template_directory_uri());?>/img/bg-img/hero1.jpg);">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12">
+                    <div class="breadcumb-content">
+                        <h3 class="breadcumb-title">Listings</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Breadcumb Area End ##### -->
+
+    <!-- ##### Advance Search Area Start ##### -->
+    <div class="south-search-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="advanced-search-form">
+                        <!-- Search Title -->
+                        <div class="search-title">
+                            <p>Search for your home</p>
+                        </div>
+                         <?php $search->the_form(); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Advance Search Area End ##### -->
+
+    <!-- ##### Listing Content Wrapper Area Start ##### -->
+    <section class="listings-content-wrapper section-padding-100">
+        <div class="container">
+
+            <div class="row">
+                 <?php 
+                     $temp = $wp_query;
+                     $wp_query = $search->query();
+                if ( have_posts() ) : 
+            
+                while ( have_posts() ) : the_post(); 
+                    
+                    $bead = get_post_meta($id, 'flate_beadroom', true);
+                    $bath = get_post_meta($id, 'flate_bathroom', true);
+
+                    $flat_category = get_the_terms( get_the_ID(), 'flat_category' );
+                    if($flat_category && ! is_wp_error( $flat_category )) {
+                        $flat_category_array = array();
+                        foreach ( $flat_category as $flat_price ) {
+                            $flat_category_array[] = $flat_price->name;
+                        }                 
+                        $flat_category = join( ", ", $flat_category_array );
+                    }
+
+                    $flat_location = get_the_terms( get_the_ID(), 'flat_location' );
+                    if($flat_location && ! is_wp_error( $flat_location )) {
+                        $flat_location_array = array();
+                        foreach ( $flat_location as $flat_location ) {
+                            $flat_location_array[] = $flat_location->name;
+                        }                 
+                        $flat_location = join( ", ", $flat_location_array );
+                    }
+                    $flat_price = get_the_terms( get_the_ID(), 'flat_price' );
+                    if($flat_price && ! is_wp_error( $flat_price )) {
+                        $flat_price_array = array();
+                        foreach ( $flat_price as $price ) {
+                            $flat_price_array[] = $price->name;
+                        }                 
+                        $flat_price = join( ", ", $flat_price_array );
+                    }
+                    $flat_space = get_the_terms( get_the_ID(), 'flat_space' );
+                    if($flat_space && ! is_wp_error( $flat_space )) {
+                        $flat_space_array = array();
+                        foreach ( $flat_space as $space ) {
+                            $flat_space_array[] = $space->name;
+                        }                 
+                        $flat_space = join( ", ", $flat_space_array );
+                    }
+                ?>
+                <!-- Single Featured Property -->
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="single-featured-property mb-50">
+                        <!-- Property Thumbnail -->
+                        <div class="property-thumb">
+                            <?php the_post_thumbnail(); ?>
+
+                            <div class="tag">
+                                <span><?php echo $flat_category; ?></span>
+                            </div>
+                            <div class="list-price">
+                                <p><?php echo $flat_price; ?></p>
+                            </div>
+                        </div>
+                        <!-- Property Content -->
+                        <div class="property-content">
+                            <h5><?php the_title(); ?></h5>
+                            <p class="location"><img src="<?php echo esc_url(get_template_directory_uri());?>/img/icons/location.png" alt=""><?php echo $flat_location; ?></p>
+                            <p>Integer nec bibendum lacus. Suspendisse dictum enim sit amet libero malesuada.</p>
+                            <div class="property-meta-data d-flex align-items-end justify-content-between">
+                                <div class="bathroom">
+                                    <img src="<?php echo esc_url(get_template_directory_uri());?>/img/icons/bathtub.png" alt="">
+                                    <span><?php echo $bath; ?></span>
+                                </div>
+                                <div class="garage">
+                                    <img src="<?php echo esc_url(get_template_directory_uri());?>/img/icons/garage.png" alt="">
+                                    <span><?php echo $bead; ?></span>
+                                </div>
+                                <div class="space">
+                                    <img src="<?php echo esc_url(get_template_directory_uri());?>/img/icons/space.png" alt="">
+                                    <span><?php echo $flat_space; ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php 
+            endwhile; 
+
+         else :
+            echo '<p>Sorry, no results matched your search.</p>';
+         endif; 
+
+         $search->pagination();
+
+         $wp_query = $temp;
+         wp_reset_query();
+         ?>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="south-pagination d-flex justify-content-end">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li class="page-item"><a class="page-link active" href="#">01</a></li>
+                                <li class="page-item"><a class="page-link" href="#">02</a></li>
+                                <li class="page-item"><a class="page-link" href="#">03</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Listing Content Wrapper Area End ##### -->
+<?php get_footer(); ?>
+
+
+
 
 Custom post...
 
