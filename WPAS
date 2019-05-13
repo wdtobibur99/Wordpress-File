@@ -1,0 +1,229 @@
+This code use function file....
+
+<?php
+function my_search_form() {
+    $args['form'] = array( 
+  'class' => array('my-class', 'row')
+);
+    // Set default WP_Query
+    $args['wp_query'] = array( 
+      'post_type' => 'cotech_flat_item', 
+      );
+
+    $args['fields'][] = array( 
+    'type' => 'taxonomy', 
+     'format' => 'select', 
+      "allow_null" => "Select a category",
+     'taxonomy' =>'flat_category',
+     'pre_html' => ' <div class="col-12 col-md-4 col-lg-3"><div class="form-group">',
+     'post_html' => '</div></div>',
+     'class' => 'form-control'
+     
+    ); 
+    $args['fields'][] = array( 
+      'type' => 'taxonomy', 
+     'format' => 'select', 
+      "allow_null" => "Select a location",
+     'taxonomy' =>'flat_location',
+     'pre_html' => ' <div class="col-12 col-md-4 col-lg-3"><div class="form-group">',
+     'post_html' => '</div></div>',
+     'class' => 'form-control'
+    ); 
+    $args['fields'][] = array( 
+      'type' => 'taxonomy', 
+     'format' => 'select', 
+      "allow_null" => "Select a price",
+     'taxonomy' =>'flat_price',
+     'pre_html' => ' <div class="col-12 col-md-4 col-lg-3"><div class="form-group">',
+     'post_html' => '</div></div>',
+     'class' => 'form-control'
+    );    
+    $args['fields'][] = array( 
+      'type' => 'taxonomy', 
+     'format' => 'select', 
+      "allow_null" => "Select a floor",
+     'taxonomy' =>'flat_floor',
+     'pre_html' => ' <div class="col-12 col-md-4 col-lg-3"><div class="form-group">',
+     'post_html' => '</div></div>',
+     'class' => 'form-control'
+    );   
+    $args['fields'][] = array( 
+      'type' => 'taxonomy', 
+     'format' => 'select',
+      "allow_null" => "Select a space", 
+     'taxonomy' =>'flat_space',
+     'pre_html' => ' <div class="col-12 col-md-4 col-lg-3"><div class="form-group">',
+     'post_html' => '</div></div>',
+     'class' => 'form-control'
+    );
+
+    
+    $args['fields'][] = array( 'type' => 'posts_per_page', 
+                               'format' => 'select', 
+                                "allow_null" => "Results per page",
+                               'pre_html' => ' <div class="col-12 col-md-4 col-lg-3"><div class="form-group">',
+                             'post_html' => '</div></div>',
+                               'class' => 'form-control',
+                               'values' => array(2=>2, 5=>5, 10=>10), 
+                               'default' => 10 );
+    $args['fields'][] = array( 'type' => 'submit',
+                               'class' => 'btn south-btn',
+                               'pre_html' => ' <div class="col-12 col-md-4 col-lg-3"><div class="form-group">',
+     'post_html' => '</div></div>',
+                               'value' => 'Search' );
+
+    register_wpas_form('myform', $args);
+}
+add_action('init','my_search_form');
+
+Custom post...
+
+<?php
+	function flat_custom_post(){
+		register_post_type('cotech_flat_item',array(
+			'labels' =>array(
+			'name'=>__('Flat','realestate'),
+			'add_new_item'=>__('Add new flat','realestate'),
+			),
+			'menu_icon'=>'dashicons-admin-home',
+			'public'=>true,
+			'supports' =>array('title','thumbnail','editor'),
+		));	
+	};
+add_action('init','flat_custom_post');
+
+//taxonomy
+if(! function_exists('nondini_taxonomy')):
+		function nondini_taxonomy() {
+			// Add new taxonomy, NOT hierarchical (like tags)
+			$labels = array(
+				'name'                       => _x( 'Flat category', 'textdomain' ),
+				'search_items'               => __( 'Search flat category', 'textdomain' ),
+				'popular_items'              => __( 'Popular flat category', 'textdomain' ),
+				'all_items'                  => __( 'All flat category', 'textdomain' ),
+				'parent_item'                => null,
+				'parent_item_colon'          => null,
+				'edit_item'                  => __( 'Edit flat category', 'textdomain' ),
+				'update_item'                => __( 'Update flat category', 'textdomain' ),
+				'add_new_item'               => __( 'Add New flat category', 'textdomain' ),
+				'new_item_name'              => __( 'New flat category', 'textdomain' ),
+				'menu_name'                  => __( 'Flat category', 'textdomain' ),
+			);
+
+			$args = array(
+				'hierarchical'          => true,
+				'labels'                => $labels,
+				'show_ui'               => true,
+				'show_admin_column'     => true,
+				'update_count_callback' => '_update_post_term_count',
+				'query_var'             => true,
+				'rewrite'               => array( 'slug' => 'flat-category' ),
+			);
+			register_taxonomy( 'flat_category', 'cotech_flat_item', $args );
+
+			// Add new taxonomy, NOT hierarchical (like tags)
+			$labels = array(
+				'name'                       => _x( 'Flat location', 'textdomain' ),
+				'search_items'               => __( 'Search flat location', 'textdomain' ),
+				'popular_items'              => __( 'Popular flat location', 'textdomain' ),
+				'all_items'                  => __( 'All flat location', 'textdomain' ),
+				'parent_item'                => null,
+				'parent_item_colon'          => null,
+				'edit_item'                  => __( 'Edit flat location', 'textdomain' ),
+				'update_item'                => __( 'Update flat location', 'textdomain' ),
+				'add_new_item'               => __( 'Add New flat location', 'textdomain' ),
+				'new_item_name'              => __( 'New flat location', 'textdomain' ),
+				'menu_name'                  => __( 'Flat location', 'textdomain' ),
+			);
+
+			$args = array(
+				'hierarchical'          => true,
+				'labels'                => $labels,
+				'show_ui'               => true,
+				'show_admin_column'     => true,
+				'update_count_callback' => '_update_post_term_count',
+				'query_var'             => true,
+				'rewrite'               => array( 'slug' => 'flat-location' ),
+			);
+			register_taxonomy( 'flat_location', 'cotech_flat_item', $args );
+			// Add new taxonomy, NOT hierarchical (like tags)
+			$labels = array(
+				'name'                       => _x( 'Flat price', 'textdomain' ),
+				'search_items'               => __( 'Search flat price', 'textdomain' ),
+				'popular_items'              => __( 'Popular flat price', 'textdomain' ),
+				'all_items'                  => __( 'All flat price', 'textdomain' ),
+				'parent_item'                => null,
+				'parent_item_colon'          => null,
+				'edit_item'                  => __( 'Edit flat price', 'textdomain' ),
+				'update_item'                => __( 'Update flat price', 'textdomain' ),
+				'add_new_item'               => __( 'Add New flat price', 'textdomain' ),
+				'new_item_name'              => __( 'New flat price', 'textdomain' ),
+				'menu_name'                  => __( 'Flat price', 'textdomain' ),
+			);
+
+			$args = array(
+				'hierarchical'          => true,
+				'labels'                => $labels,
+				'show_ui'               => true,
+				'show_admin_column'     => true,
+				'update_count_callback' => '_update_post_term_count',
+				'query_var'             => true,
+				'rewrite'               => array( 'slug' => 'flat-price' ),
+			);
+			register_taxonomy( 'flat_price', 'cotech_flat_item', $args );
+			// Add new taxonomy, NOT hierarchical (like tags)
+			$labels = array(
+				'name'                       => _x( 'Flat floor', 'textdomain' ),
+				'search_items'               => __( 'Search flat floor', 'textdomain' ),
+				'popular_items'              => __( 'Popular flat floor', 'textdomain' ),
+				'all_items'                  => __( 'All flat floor', 'textdomain' ),
+				'parent_item'                => null,
+				'parent_item_colon'          => null,
+				'edit_item'                  => __( 'Edit flat floor', 'textdomain' ),
+				'update_item'                => __( 'Update flat floor', 'textdomain' ),
+				'add_new_item'               => __( 'Add New flat floor', 'textdomain' ),
+				'new_item_name'              => __( 'New flat floor', 'textdomain' ),
+				'menu_name'                  => __( 'Flat floor', 'textdomain' ),
+			);
+
+			$args = array(
+				'hierarchical'          => true,
+				'labels'                => $labels,
+				'show_ui'               => true,
+				'show_admin_column'     => true,
+				'update_count_callback' => '_update_post_term_count',
+				'query_var'             => true,
+				'rewrite'               => array( 'slug' => 'flat-floor' ),
+			);
+			register_taxonomy( 'flat_floor', 'cotech_flat_item', $args );
+			// Add new taxonomy, NOT hierarchical (like tags)
+			$labels = array(
+				'name'                       => _x( 'Flat Space', 'textdomain' ),
+				'search_items'               => __( 'Search flat space', 'textdomain' ),
+				'popular_items'              => __( 'Popular flat space', 'textdomain' ),
+				'all_items'                  => __( 'All flat space', 'textdomain' ),
+				'parent_item'                => null,
+				'parent_item_colon'          => null,
+				'edit_item'                  => __( 'Edit flat Space', 'textdomain' ),
+				'update_item'                => __( 'Update flat space', 'textdomain' ),
+				'add_new_item'               => __( 'Add New flat space', 'textdomain' ),
+				'new_item_name'              => __( 'New flat space', 'textdomain' ),
+				'menu_name'                  => __( 'Flat space', 'textdomain' ),
+			);
+			$args = array(
+				'hierarchical'          => true,
+				'labels'                => $labels,
+				'show_ui'               => true,
+				'show_admin_column'     => true,
+				'update_count_callback' => '_update_post_term_count',
+				'query_var'             => true,
+				'rewrite'               => array( 'slug' => 'flat-space' ),
+			);
+			register_taxonomy( 'flat_space', 'cotech_flat_item', $args );
+		};
+	add_action( 'init', 'nondini_taxonomy' );
+endif;
+
+?>
+
+
