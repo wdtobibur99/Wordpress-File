@@ -1,0 +1,108 @@
+
+Metabox File....
+
+$options[]    = array(
+  'id'        => 'flat_items',
+  'title'     => 'Flat information',
+  'post_type' => 'cotech_flat_item',
+  'context'   => 'normal',
+  'priority'  => 'default',
+  'sections'  => array(
+    array(
+      'fields' => array(
+        array(
+          'id'          => 'flate_beadroom',
+          'type'        => 'select',
+          'title'       =>  __( 'Flat beadroom', 'realestate' ),
+          'placeholder' => 'Select a bead',
+          'options'     => array(
+            '1 Bead'  => '1 Bead',
+            '2 Bead'  => '2 Bead',
+            '3 Bead'  => '3 Bead',
+            '4 Bead'  => '4 Bead',
+          ),
+        ),        
+        array(
+          'id'          => 'flate_bathroom',
+          'type'        => 'select',
+          'title'       =>  __( 'Flat bathroom', 'realestate' ),
+          'placeholder' => 'Select a bead',
+          'options'     => array(
+            '1 Bath'  => '1 Bath',
+            '2 Bath'  => '2 Bath',
+            '3 Bath'  => '3 Bath',
+            '4 Bath'  => '4 Bath',
+          ),
+        ),
+        array(
+          'id'          => 'flat_gallery',
+          'type'        => 'gallery',
+          'title'       => __('Flat Gallery', 'realestate' ),
+          'add_title'   => __('Add Images', 'realestate' ),
+          'edit_title'  => __('Edit Images',  'realestate' ),
+          'clear_title' => __('Remove Images',  'realestate' ),
+        ),
+        array(
+          'id'        => 'features_items',
+          'type'      => 'group',
+          'title'     => __('Features item', 'realestate' ),
+          'button_title'=> __('Add new item', 'realestate' ),
+          'accordion_title' => 'Add new features item',
+          'fields'    => array(
+            array(
+              'id'    => 'features',
+              'type'  => 'select',
+              'title' => __('Feature item', 'realestate' ),
+              'options'      => array(
+                'Gated Community'    => 'Gated Community',
+                'Automatic Sprinklers'    => 'Automatic Sprinklers',
+                'Fireplace'    => 'Fireplace',
+                'Window Shutters'    => 'Window Shutters',
+                'Ocean Views'    => 'Ocean Views',
+                'Heated Floors'    => 'Heated Floors',
+                'Heated Floors'    => 'Private Patio',
+                'Window Shutters'    => 'Window Shutters',
+                'Beach Access'    => 'Beach Access',
+                'Rooftop Terrace'    => 'Rooftop Terrace',
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  ),
+);
+
+
+Template Display....
+
+ $flat_meta_box = get_post_meta($id, 'flat_items', true);
+$flat_gallery = $flat_meta_box['flat_gallery'];
+$bead = $flat_meta_box['flate_beadroom'];
+$bath = $flat_meta_box['flate_bathroom'];
+$details = $flat_meta_box['flat_details'];
+ $features = $flat_meta_box['features_items'];
+ <?php echo esc_html($bath); ?>
+ <?php echo esc_html($bead); ?>
+ 
+ 
+ 
+   <!-- Single Listings Slides -->
+  <div class="single-listings-sliders owl-carousel">
+     <?php
+          if($flat_gallery){
+              $flat_gallery_ids = explode(",",$flat_gallery);
+              foreach ( $flat_gallery_ids as $flat_gallery_id ) {
+                  echo wp_get_attachment_image($flat_gallery_id,'medium');
+              }
+          }
+      ?>
+  </div>
+                    
+ <ul class="listings-core-features d-flex align-items-center">
+    <?php 
+        foreach ($features as $key => $feature) {
+            echo '<li><i class="fa fa-check" aria-hidden="true"></i>'.$feature['features'].'</li>';
+        } 
+    ?>
+</ul>
